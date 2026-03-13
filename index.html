@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Воронки ЦКК — Руководство</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --fuchsia:#E8177A;
+  --fuchsia-dim:rgba(232,23,122,0.12);
+  --teal:#0B8A82;
+  --gold:#C9960C;
+  --black:#0C0C0C;
+  --white:#FFFFFF;
+  --off:#F7F5F2;
+  --gray:#6B6B6B;
+  --border:#E0DDD8;
+}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--black);line-height:1.6;overflow-x:hidden}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(12,12,12,0.95);backdrop-filter:blur(12px);padding:0 48px;height:56px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,0.07)}
+.nav-logo{font-family:'DM Serif Display',serif;font-size:18px;color:var(--white);letter-spacing:-0.5px}
+.nav-logo span{color:var(--fuchsia)}
+.nav-links{display:flex;gap:28px}
+.nav-links a{color:rgba(255,255,255,0.45);font-size:13px;text-decoration:none;transition:color .2s}
+.nav-links a:hover{color:var(--white)}
+.hero{min-height:100vh;background:var(--black);display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:100px 48px 80px;position:relative;overflow:hidden;gap:60px}
+.hero-bg{position:absolute;top:-300px;right:-200px;width:700px;height:700px;background:radial-gradient(ellipse,rgba(232,23,122,0.18) 0%,transparent 65%);pointer-events:none}
+.hero-bg2{position:absolute;bottom:-200px;left:30%;width:500px;height:500px;background:radial-gradient(ellipse,rgba(11,138,130,0.07) 0%,transparent 65%);pointer-events:none}
+.hero-eyebrow{display:flex;align-items:center;gap:12px;margin-bottom:36px}
+.hero-eyebrow-line{width:32px;height:1px;background:var(--fuchsia)}
+.hero-eyebrow span{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--fuchsia);font-weight:600}
+.hero h1{font-family:'DM Serif Display',serif;font-size:clamp(52px,5.5vw,80px);line-height:1.05;color:var(--white);margin-bottom:28px}
+.hero h1 em{font-style:italic;color:var(--fuchsia)}
+.hero-sub{font-size:17px;font-weight:300;color:rgba(255,255,255,0.45);line-height:1.7;max-width:420px;margin-bottom:52px}
+.hero-cta{display:inline-flex;align-items:center;gap:10px;background:var(--fuchsia);color:var(--white);font-size:13px;font-weight:600;letter-spacing:.5px;padding:14px 28px;border-radius:4px;text-decoration:none;transition:opacity .2s}
+.hero-cta:hover{opacity:.85}
+.hero-right{display:flex;flex-direction:column;gap:16px}
+.hero-stat-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:28px 32px;transition:border-color .3s}
+.hero-stat-card:hover{border-color:rgba(232,23,122,0.3)}
+.hero-stat-num{font-family:'DM Serif Display',serif;font-size:48px;color:var(--white);line-height:1}
+.hero-stat-num b{color:var(--fuchsia)}
+.hero-stat-label{font-size:13px;color:rgba(255,255,255,0.35);margin-top:6px}
+.hero-stat-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+section{padding:100px 48px}
+.s-tag{font-size:10px;letter-spacing:3.5px;text-transform:uppercase;color:var(--fuchsia);font-weight:600;margin-bottom:18px}
+.s-title{font-family:'DM Serif Display',serif;font-size:clamp(34px,3.5vw,52px);line-height:1.1;margin-bottom:16px}
+.s-lead{font-size:17px;font-weight:300;color:var(--gray);max-width:580px;margin-bottom:64px;line-height:1.7}
+.divider{height:1px;background:var(--border);margin:0 48px}
+.ecosystem{background:var(--off)}
+.eco-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border)}
+.eco-card{background:var(--white);padding:48px 40px;position:relative;overflow:hidden;transition:background .25s}
+.eco-card:hover{background:var(--off)}
+.eco-num{font-family:'DM Serif Display',serif;font-size:80px;color:rgba(0,0,0,0.05);line-height:1;position:absolute;top:16px;right:24px}
+.eco-icon{width:44px;height:44px;border-radius:10px;background:var(--fuchsia-dim);display:flex;align-items:center;justify-content:center;margin-bottom:24px;font-size:18px}
+.eco-title{font-size:17px;font-weight:600;margin-bottom:10px}
+.eco-desc{font-size:14px;color:var(--gray);line-height:1.7}
+.eco-tag{display:inline-block;margin-top:20px;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--fuchsia)}
+.key-rule-section{background:var(--fuchsia);padding:72px 48px;text-align:center}
+.key-rule-section p{font-family:'DM Serif Display',serif;font-size:clamp(24px,3vw,40px);color:var(--white);line-height:1.35;max-width:820px;margin:0 auto}
+.key-rule-section p mark{background:rgba(0,0,0,0.2);color:var(--white);padding:2px 12px;border-radius:4px;font-style:normal}
+.lf-flow{max-width:740px;margin:0 auto}
+.lf-step{display:grid;grid-template-columns:24px 1fr;gap:24px;margin-bottom:4px}
+.lf-spine{display:flex;flex-direction:column;align-items:center;padding-top:20px}
+.lf-dot{width:14px;height:14px;border-radius:50%;background:var(--fuchsia);flex-shrink:0}
+.lf-line{width:2px;flex:1;background:var(--border);margin:6px 0}
+.lf-step:last-child .lf-line{display:none}
+.lf-body{background:var(--white);border:1.5px solid var(--border);border-radius:14px;padding:28px 32px;margin-bottom:12px;transition:border-color .25s,box-shadow .25s}
+.lf-body:hover{border-color:var(--fuchsia);box-shadow:0 0 0 4px rgba(232,23,122,0.07)}
+.lf-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.lf-name{font-size:16px;font-weight:600}
+.badge{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:5px 14px;border-radius:20px}
+.b-enter{background:rgba(232,23,122,0.1);color:var(--fuchsia)}
+.b-work{background:rgba(11,138,130,0.1);color:var(--teal)}
+.b-key{background:rgba(201,150,12,0.12);color:var(--gold)}
+.lf-desc{font-size:14px;color:var(--gray);line-height:1.7}
+.lf-list{margin-top:10px;padding-left:0;list-style:none}
+.lf-list li{font-size:13px;color:var(--gray);padding:4px 0 4px 18px;position:relative;border-bottom:1px solid var(--off)}
+.lf-list li::before{content:"→";position:absolute;left:0;color:var(--fuchsia);font-size:11px;top:5px}
+.outcomes-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;max-width:740px;margin:24px auto 0}
+.outcome-card{border:1.5px solid var(--border);border-radius:12px;padding:22px 22px}
+.outcome-title{font-size:14px;font-weight:600;margin-bottom:6px}
+.outcome-desc{font-size:12px;color:var(--gray);line-height:1.65}
+.oc-pink{border-color:rgba(232,23,122,0.3)}.oc-pink .outcome-title{color:var(--fuchsia)}
+.oc-teal{border-color:rgba(11,138,130,0.3)}.oc-teal .outcome-title{color:var(--teal)}
+.oc-gold{border-color:rgba(201,150,12,0.3)}.oc-gold .outcome-title{color:var(--gold)}
+.oc-gray .outcome-title{color:var(--gray)}
+.bant-section{background:var(--black)}
+.bant-section .s-title{color:var(--white)}
+.bant-section .s-lead{color:rgba(255,255,255,0.4)}
+.bant-section .s-tag{color:var(--fuchsia)}
+.bant-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:rgba(255,255,255,0.06);border:2px solid rgba(255,255,255,0.06)}
+.bant-cell{padding:52px 48px;background:var(--black);position:relative;overflow:hidden;transition:background .25s}
+.bant-cell:hover{background:rgba(255,255,255,0.025)}
+.bant-bg-letter{position:absolute;right:16px;top:-12px;font-family:'DM Serif Display',serif;font-size:120px;color:rgba(255,255,255,0.03);line-height:1;pointer-events:none}
+.bant-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--fuchsia);font-weight:600;margin-bottom:14px}
+.bant-title{font-family:'DM Serif Display',serif;font-size:28px;color:var(--white);margin-bottom:14px}
+.bant-desc{font-size:14px;color:rgba(255,255,255,0.4);line-height:1.75}
+.bant-pill{display:inline-block;margin-top:22px;background:rgba(232,23,122,0.15);color:rgba(232,23,122,0.9);font-size:12px;font-weight:600;padding:7px 18px;border-radius:20px}
+.thermo-section{background:var(--off)}
+.thermo-bars{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;margin-top:64px}
+.t-bar-track{height:6px;background:var(--border);border-radius:3px;margin-bottom:24px;overflow:hidden}
+.t-fill{height:100%;border-radius:3px}
+.t-fill-1{width:25%;background:#B0B8C4}
+.t-fill-2{width:50%;background:var(--fuchsia);opacity:.5}
+.t-fill-3{width:75%;background:var(--fuchsia)}
+.t-fill-4{width:100%;background:var(--gold)}
+.t-num{font-family:'DM Serif Display',serif;font-size:56px;line-height:1;margin-bottom:14px}
+.t1 .t-num{color:#B0B8C4}.t2 .t-num{color:rgba(232,23,122,.6)}.t3 .t-num{color:var(--fuchsia)}.t4 .t-num{color:var(--gold)}
+.t-title{font-size:15px;font-weight:600;margin-bottom:8px}
+.t-desc{font-size:13px;color:var(--gray);line-height:1.7}
+.thermo-note{margin-top:48px;padding:28px 36px;border-left:4px solid var(--gold);background:rgba(201,150,12,0.06);border-radius:0 12px 12px 0}
+.thermo-note p{font-size:15px;color:var(--black);line-height:1.7}
+.project-section{background:var(--off)}
+/* Stage cards */
+.pf-cards{display:flex;flex-direction:column;gap:16px;margin-top:64px}
+.pf-card{background:var(--white);border:1.5px solid var(--border);border-radius:18px;overflow:hidden;transition:border-color .25s,box-shadow .25s}
+.pf-card:hover{border-color:var(--fuchsia);box-shadow:0 4px 24px rgba(232,23,122,0.08)}
+.pf-card.success-card{border-color:rgba(232,23,122,.25);background:rgba(232,23,122,.03)}
+.pf-card-top{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:32px;padding:32px 40px;cursor:pointer;position:relative}
+.pf-card-top::after{content:"↓";position:absolute;right:40px;top:50%;transform:translateY(-50%);font-size:16px;color:var(--border);transition:transform .3s,color .3s}
+.pf-card.open .pf-card-top::after{transform:translateY(-50%) rotate(180deg);color:var(--fuchsia)}
+.pf-card-num{font-family:'DM Serif Display',serif;font-size:52px;color:var(--border);line-height:1;min-width:60px}
+.pf-card.success-card .pf-card-num{color:rgba(232,23,122,.2)}
+.pf-card-meta{flex:1}
+.pf-card-name{font-size:20px;font-weight:600;margin-bottom:10px}
+.pf-card.success-card .pf-card-name{color:var(--fuchsia)}
+.pf-card-progress{display:flex;align-items:center;gap:16px}
+.pf-card-pct{font-family:'DM Serif Display',serif;font-size:15px;color:var(--gray);min-width:56px}
+.pf-bar-wide{flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden}
+.pf-bar-fill{height:100%;background:linear-gradient(90deg,var(--fuchsia),rgba(232,23,122,.4));border-radius:3px}
+.pf-card-badges{display:flex;flex-direction:column;gap:8px;align-items:flex-end;min-width:100px}
+.pf-badge-forecast{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:5px 14px;border-radius:20px;background:rgba(232,23,122,.09);color:var(--fuchsia);white-space:nowrap}
+.pf-badge-forecast.gray{background:var(--off);color:var(--gray)}
+.pf-card-body{display:none;padding:0 40px 36px;border-top:1px solid var(--border)}
+.pf-card.open .pf-card-body{display:grid;grid-template-columns:1fr 1fr;gap:40px;padding-top:32px}
+.pf-body-left .pf-cond-label{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--fuchsia);font-weight:600;margin-bottom:12px}
+.pf-cond-text{font-size:14px;color:var(--gray);background:var(--off);border-radius:10px;padding:16px 20px;line-height:1.7;margin-bottom:0}
+.pf-body-right .pf-tasks-label{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gray);font-weight:600;margin-bottom:14px}
+.pf-task-list{list-style:none}
+.pf-task-list li{font-size:14px;color:var(--black);padding:8px 0 8px 22px;position:relative;border-bottom:1px solid var(--off)}
+.pf-task-list li:last-child{border-bottom:none}
+.pf-task-list li::before{content:"→";position:absolute;left:0;color:var(--fuchsia);font-size:12px;top:9px}
+@media(max-width:900px){
+  .pf-card.open .pf-card-body{grid-template-columns:1fr}
+  .pf-card-top{grid-template-columns:auto 1fr;gap:20px;padding:24px 28px}
+  .pf-card-badges{display:none}
+  .pf-card-body{padding:0 28px 28px}
+  .pf-card.open .pf-card-body{padding-top:24px}
+}
+.forecast-sec{background:var(--fuchsia)}
+.forecast-sec .s-tag{color:rgba(255,255,255,.6)}
+.forecast-sec .s-title{color:var(--white)}
+.fc-cards{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:64px}
+.fc-card{background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.18);border-radius:16px;padding:48px 44px;transition:background .25s}
+.fc-card:hover{background:rgba(255,255,255,.18)}
+.fc-eyebrow{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:16px;font-weight:600}
+.fc-name{font-family:'DM Serif Display',serif;font-size:52px;color:var(--white);line-height:1;margin-bottom:16px}
+.fc-range{display:inline-block;background:rgba(0,0,0,.2);color:rgba(255,255,255,.9);padding:8px 20px;border-radius:24px;font-size:15px;font-weight:600;margin-bottom:24px}
+.fc-card p{font-size:14px;color:rgba(255,255,255,.6);line-height:1.75}
+.fc-note{margin-top:32px;padding:28px 36px;background:rgba(0,0,0,.25);border-radius:12px}
+.fc-note p{font-size:15px;color:rgba(255,255,255,.8);line-height:1.7}
+.pp-section{background:var(--white)}
+.pp-flow{display:flex;align-items:stretch;margin-top:64px;border:1.5px solid var(--border);border-radius:16px;overflow:hidden}
+.pp-step{flex:1;padding:40px 32px;border-right:1.5px solid var(--border);transition:background .2s}
+.pp-step:last-child{border-right:none}
+.pp-step:hover{background:var(--off)}
+.pp-step-num{font-family:'DM Serif Display',serif;font-size:52px;color:var(--border);line-height:1;margin-bottom:16px}
+.pp-step-title{font-size:16px;font-weight:600;margin-bottom:10px}
+.pp-step-desc{font-size:13px;color:var(--gray);line-height:1.7}
+.pp-step.success{background:rgba(232,23,122,.04)}
+.pp-step.success .pp-step-num{color:rgba(232,23,122,.2)}
+.pp-step.success .pp-step-title{color:var(--fuchsia)}
+.pp-req{margin-top:20px;padding:14px 18px;background:var(--off);border-radius:10px;font-size:12px;color:var(--gray);line-height:1.65}
+.pp-req strong{color:var(--black);display:block;margin-bottom:4px;font-size:10px;letter-spacing:1px;text-transform:uppercase}
+.support-sec{background:var(--off)}
+.support-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:64px}
+.support-card{background:var(--white);border:1.5px solid var(--border);border-radius:18px;padding:48px 44px;transition:border-color .25s}
+.support-card:hover{border-color:var(--fuchsia)}
+.support-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:28px}
+.si-pink{background:rgba(232,23,122,.1)}.si-teal{background:rgba(11,138,130,.1)}
+.support-card h3{font-family:'DM Serif Display',serif;font-size:24px;margin-bottom:12px}
+.support-card p{font-size:14px;color:var(--gray);line-height:1.75;margin-bottom:24px}
+.flow-pills{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.fpill{font-size:12px;font-weight:600;padding:5px 14px;border-radius:20px;background:var(--off);border:1px solid var(--border);color:var(--gray)}
+.fpill.active{background:rgba(232,23,122,.09);color:var(--fuchsia);border-color:rgba(232,23,122,.2)}
+.fpill.teal{background:rgba(11,138,130,.08);color:var(--teal);border-color:rgba(11,138,130,.2)}
+.farrow{color:var(--border);font-size:12px;padding:0 2px}
+.support-note{background:var(--off);border-radius:10px;padding:16px 20px;margin-top:20px;font-size:13px;color:var(--gray);line-height:1.65}
+.mkt-sec{background:var(--black)}
+.mkt-sec .s-title{color:var(--white)}
+.mkt-sec .s-lead{color:rgba(255,255,255,.4)}
+.mkt-sec .s-tag{color:var(--fuchsia)}
+.mkt-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:64px}
+.mkt-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:40px 38px;transition:border-color .25s}
+.mkt-card:hover{border-color:rgba(232,23,122,.3)}
+.mkt-card-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--fuchsia);font-weight:600;margin-bottom:14px}
+.mkt-card-title{font-size:18px;font-weight:600;color:var(--white);margin-bottom:12px}
+.mkt-card p{font-size:14px;color:rgba(255,255,255,.4);line-height:1.75}
+.mkt-heat{background:rgba(232,23,122,.15);border:1px solid rgba(232,23,122,.25);border-radius:16px;padding:40px 38px;grid-column:span 2}
+.mkt-heat-title{font-family:'DM Serif Display',serif;font-size:28px;color:var(--white);margin-bottom:16px}
+.mkt-heat p{font-size:15px;color:rgba(255,255,255,.55);line-height:1.75;max-width:700px}
+.mkt-heat-tag{display:inline-flex;align-items:center;gap:8px;margin-top:24px;background:rgba(232,23,122,.2);color:rgba(232,23,122,.9);padding:10px 22px;border-radius:24px;font-size:13px;font-weight:600}
+.access-sec{background:var(--off)}
+.access-table{width:100%;border-collapse:collapse;margin-top:64px;background:var(--white);border:1.5px solid var(--border);border-radius:16px;overflow:hidden}
+.access-table th{background:var(--black);color:var(--white);font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:18px 28px;text-align:left;font-weight:600}
+.access-table td{padding:20px 28px;border-bottom:1px solid var(--off);font-size:14px;vertical-align:middle}
+.access-table tr:last-child td{border-bottom:none}
+.access-table tr:hover td{background:var(--off)}
+.ic-yes{color:var(--teal);font-weight:700;font-size:16px}
+.ic-part{color:var(--gold);font-weight:700}
+.ic-no{color:var(--border)}
+.access-legend{display:flex;gap:32px;margin-top:20px;flex-wrap:wrap}
+.al-item{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--gray)}
+footer{background:var(--black);padding:60px 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:24px}
+.footer-brand{font-family:'DM Serif Display',serif;font-size:24px;color:var(--white)}
+.footer-brand span{color:var(--fuchsia)}
+.footer-meta{font-size:13px;color:rgba(255,255,255,.25);margin-top:6px}
+.footer-btn{background:var(--fuchsia);color:var(--white);font-size:13px;font-weight:600;padding:14px 28px;border-radius:6px;text-decoration:none;transition:opacity .2s}
+.footer-btn:hover{opacity:.85}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+.reveal.visible{opacity:1;transform:none}
+@media(max-width:900px){
+  nav{padding:0 20px}.nav-links{display:none}
+  .hero{grid-template-columns:1fr;padding:80px 20px 60px;gap:40px}
+  .hero-stat-row{grid-template-columns:1fr}
+  section{padding:70px 20px}.divider{margin:0 20px}
+  .eco-cards{grid-template-columns:1fr}
+  .bant-grid{grid-template-columns:1fr}
+  .thermo-bars{grid-template-columns:1fr 1fr;gap:24px}
+  .fc-cards,.support-grid,.mkt-grid{grid-template-columns:1fr}
+  .mkt-heat{grid-column:span 1}
+  .pp-flow{flex-direction:column}
+  .pp-step{border-right:none;border-bottom:1.5px solid var(--border)}
+  .pp-step:last-child{border-bottom:none}
+  .pf-row{grid-template-columns:1fr}
+  .pf-row-stage,.pf-row-pct{border-right:none;border-bottom:1px solid var(--border)}
+  footer{flex-direction:column;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">ЦКК <span>CRM</span></div>
+  <div class="nav-links">
+    <a href="#ecosystem">Экосистема</a>
+    <a href="#leads">Лиды</a>
+    <a href="#bant">BANT</a>
+    <a href="#project">Проекты</a>
+    <a href="#pp">Продажа ПП</a>
+    <a href="#support">Сопровождение</a>
+    <a href="#marketing">Маркетинг</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg"></div><div class="hero-bg2"></div>
+  <div>
+    <div class="hero-eyebrow"><div class="hero-eyebrow-line"></div><span>ЦКК · b24.1stbit.ru</span></div>
+    <h1>Система<br><em>воронок</em><br>в Битрикс24</h1>
+    <p class="hero-sub">Полный разбор логики, этапов, обязательных полей и правил работы со всеми воронками отдела продаж.</p>
+    <a href="#ecosystem" class="hero-cta">Начать изучение →</a>
+  </div>
+  <div class="hero-right">
+    <div class="hero-stat-row">
+      <div class="hero-stat-card"><div class="hero-stat-num"><b>4</b>+</div><div class="hero-stat-label">Воронки в системе</div></div>
+      <div class="hero-stat-card"><div class="hero-stat-num"><b>1</b></div><div class="hero-stat-label">Единый Битрикс для всех</div></div>
+    </div>
+    <div class="hero-stat-row">
+      <div class="hero-stat-card"><div class="hero-stat-num"><b>6</b></div><div class="hero-stat-label">Этапов в проектной воронке</div></div>
+      <div class="hero-stat-card"><div class="hero-stat-num"><b>0</b></div><div class="hero-stat-label">Дублей на одного клиента</div></div>
+    </div>
+    <div class="hero-stat-card" style="border-color:rgba(232,23,122,0.25)">
+      <div style="font-size:13px;color:rgba(255,255,255,.4);margin-bottom:8px">Главное правило</div>
+      <div style="font-size:16px;color:var(--white);font-weight:500;line-height:1.5">Каждый новый запрос клиента — отдельная сделка, даже если клиент уже есть в системе</div>
+    </div>
+  </div>
+</section>
+
+<section class="ecosystem" id="ecosystem">
+  <div class="s-tag reveal">Как устроена система</div>
+  <h2 class="s-title reveal">Экосистема воронок ЦКК</h2>
+  <p class="s-lead reveal">Все отделы работают в одном Битриксе. Система двухуровневая: сначала лид, потом сделка в нужной воронке.</p>
+  <div class="eco-cards reveal">
+    <div class="eco-card"><div class="eco-num">01</div><div class="eco-icon">🎯</div><div class="eco-title">Лидовая воронка</div><div class="eco-desc">Входная точка для всех контактов. Квалифицируем клиента, определяем запрос и направляем в нужную воронку сделок.</div><span class="eco-tag">Вход для всех →</span></div>
+    <div class="eco-card"><div class="eco-num">02</div><div class="eco-icon">📊</div><div class="eco-title">Три воронки сделок</div><div class="eco-desc">После квалификации создаётся сделка: Проектная, Продажа ПП или Сопровождение. Автоматически, без лишних действий.</div><span class="eco-tag">3 сценария →</span></div>
+    <div class="eco-card"><div class="eco-num">03</div><div class="eco-icon">🔐</div><div class="eco-title">Права доступа</div><div class="eco-desc">РОП/РОС видит всё, редактирует своих сотрудников. Менеджер видит всё, редактирует только свои сделки.</div><span class="eco-tag">Прозрачность →</span></div>
+  </div>
+</section>
+
+<div class="key-rule-section">
+  <p>Сделка не переходит на следующий этап, пока не заполнены <mark>все обязательные поля</mark> текущего этапа</p>
+</div>
+
+<section id="leads" style="background:var(--white)">
+  <div class="s-tag reveal">Шаг первый</div>
+  <h2 class="s-title reveal">Лидовая воронка</h2>
+  <p class="s-lead reveal">Все входящие контакты проходят квалификацию здесь. После этого система автоматически создаёт сделку в нужной воронке.</p>
+  <div class="lf-flow">
+    <div class="lf-step reveal">
+      <div class="lf-spine"><div class="lf-dot"></div><div class="lf-line"></div></div>
+      <div class="lf-body">
+        <div class="lf-top"><span class="lf-name">Не обработан</span><span class="badge b-enter">Вход</span></div>
+        <div class="lf-desc">Входящий контакт с любого канала. Обязательно заполнить базовые данные о клиенте:</div>
+        <ul class="lf-list">
+          <li>ФИО, телефон или email (хотя бы одно)</li>
+          <li>Источник лида, название мероприятия (если с мероприятия)</li>
+          <li>Название компании, ИНН, выручка, вид деятельности</li>
+          <li>Должность контактного лица и запрос клиента</li>
+        </ul>
+      </div>
+    </div>
+    <div class="lf-step reveal">
+      <div class="lf-spine"><div class="lf-dot"></div><div class="lf-line"></div></div>
+      <div class="lf-body">
+        <div class="lf-top"><span class="lf-name">В работе</span><span class="badge b-work">Обработка</span></div>
+        <div class="lf-desc">Менеджер взял лид в работу. Задачи: снять информацию, провести первичную встречу, ответить на вопросы, презентовать компанию и договориться о следующем шаге.</div>
+      </div>
+    </div>
+    <div class="lf-step reveal">
+      <div class="lf-spine"><div class="lf-dot" style="background:var(--teal)"></div><div class="lf-line"></div></div>
+      <div class="lf-body" style="border-color:rgba(11,138,130,0.3)">
+        <div class="lf-top"><span class="lf-name">Квалифицирован</span><span class="badge b-key">Ключевой этап</span></div>
+        <div class="lf-desc">Целевая компания, ЛПР с потребностью. Выбрать тип воронки — система создаст сделку <strong>автоматически</strong>. Варианты: проектная, продажа ПП, сопровождение.</div>
+      </div>
+    </div>
+  </div>
+  <div style="max-width:740px;margin:32px auto 0" class="reveal">
+    <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gray);font-weight:600;margin-bottom:16px">Финальные статусы лида</div>
+  </div>
+  <div class="outcomes-grid reveal">
+    <div class="outcome-card oc-pink"><div class="outcome-title">Прогрев маркетинг</div><div class="outcome-desc">Интересен, но потребности нет сейчас. Маркетинг добавит в рассылки и мероприятия.</div></div>
+    <div class="outcome-card oc-gold"><div class="outcome-title">Ожидание</div><div class="outcome-desc">Целевой, купит позже. Обязательно запланировать событие с датой возврата.</div></div>
+    <div class="outcome-card oc-teal"><div class="outcome-title">Уже в сделке</div><div class="outcome-desc">По клиенту уже ведётся работа. В комментарии — ссылка на актуальную сделку.</div></div>
+    <div class="outcome-card oc-gray"><div class="outcome-title">Отказ клиента</div><div class="outcome-desc">Нет потребности, но компания целевая. Маркетинг берёт на прогрев.</div></div>
+    <div class="outcome-card oc-gray"><div class="outcome-title">Отказ по квалификации</div><div class="outcome-desc">Компания не наша аудитория. Передать в релевантное подразделение.</div></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section class="bant-section" id="bant">
+  <div class="s-tag reveal">Методология квалификации</div>
+  <h2 class="s-title reveal">BANT — фреймворк для проектной воронки</h2>
+  <p class="s-lead reveal">Обязательный инструмент для перехода на второй этап. Все четыре поля должны быть заполнены.</p>
+  <div class="bant-grid reveal">
+    <div class="bant-cell"><div class="bant-bg-letter">B</div><div class="bant-label">Budget · Бюджет</div><div class="bant-title">Есть ли деньги?</div><div class="bant-desc">Выяснить, выделен ли бюджет на решение задачи. Это поле тянется в отчёт — важно заполнить корректно. Примерный диапазон лучше, чем пустое поле.</div><span class="bant-pill">Тянется в отчёт</span></div>
+    <div class="bant-cell" style="border-right:none"><div class="bant-bg-letter">A</div><div class="bant-label">Authority · Авторитет</div><div class="bant-title">Кто принимает решение?</div><div class="bant-desc">Определить ЛПР и ЛВР. Выйти на спонсора проекта — ключевая задача на старте. Без доступа к ЛПР сделка не закроется.</div><span class="bant-pill">Спонсор проекта</span></div>
+    <div class="bant-cell" style="border-bottom:none"><div class="bant-bg-letter">N</div><div class="bant-label">Need · Потребность</div><div class="bant-title">Какая задача стоит?</div><div class="bant-desc">Бизнес-потребность клиента — что он хочет получить в результате. Это основа для разработки концепции и КП.</div><span class="bant-pill">Бизнес-эффект</span></div>
+    <div class="bant-cell" style="border-right:none;border-bottom:none"><div class="bant-bg-letter">T</div><div class="bant-label">Timeline · Сроки</div><div class="bant-title">Когда планирует старт?</div><div class="bant-desc">Ориентировочная дата начала проекта. Влияет на приоритизацию в воронке и загрузку проектной команды.</div><span class="bant-pill">Дата старта</span></div>
+  </div>
+</section>
+
+<section class="thermo-section" id="thermo">
+  <div class="s-tag reveal">Инструмент оценки</div>
+  <h2 class="s-title reveal">Градусник клиента</h2>
+  <p class="s-lead reveal">Показывает готовность клиента к покупке. Заполняется на каждом ключевом этапе — позволяет понять, как движется клиент.</p>
+  <div class="thermo-bars reveal">
+    <div class="t-bar-wrap t1"><div class="t-bar-track"><div class="t-fill t-fill-1"></div></div><div class="t-num">1</div><div class="t-title">Не знаю о проблеме</div><div class="t-desc">Только начинает осознавать задачу. Холодный контакт, нужна просветительская работа и контент.</div></div>
+    <div class="t-bar-wrap t2"><div class="t-bar-track"><div class="t-fill t-fill-2"></div></div><div class="t-num">2</div><div class="t-title">Знаю, изучаю решения</div><div class="t-desc">Осознал потребность, ищет варианты. Пора показывать экспертизу и кейсы компании.</div></div>
+    <div class="t-bar-wrap t3"><div class="t-bar-track"><div class="t-fill t-fill-3"></div></div><div class="t-num">3</div><div class="t-title">Рассматриваю варианты</div><div class="t-desc">Сравнивает подходы. Важно показать уникальность нашего предложения vs конкуренты.</div></div>
+    <div class="t-bar-wrap t4"><div class="t-bar-track"><div class="t-fill t-fill-4"></div></div><div class="t-num">4</div><div class="t-title">Выбираю партнёра</div><div class="t-desc">Горячий клиент. Максимальный приоритет — сделка близка к закрытию, не упустить момент.</div></div>
+  </div>
+  <div class="thermo-note reveal"><p><strong>Практика:</strong> если градусник не растёт от этапа к этапу — это сигнал пересмотреть стратегию работы с клиентом. Нужно обсудить с РОПом и найти блокер.</p></div>
+</section>
+
+<div class="divider"></div>
+
+<section class="project-section" id="project">
+  <div class="s-tag reveal">Основной сценарий</div>
+  <h2 class="s-title reveal">Проектная воронка</h2>
+  <p class="s-lead reveal">Для клиентов с запросом на внедрение проекта. Самая длинная воронка с жёсткими блокерами на каждом этапе. Нажмите на карточку, чтобы раскрыть детали.</p>
+
+  <div class="pf-cards reveal">
+
+    <!-- 01 Квалификация -->
+    <div class="pf-card open">
+      <div class="pf-card-top" onclick="toggleCard(this)">
+        <div class="pf-card-num">01</div>
+        <div class="pf-card-meta">
+          <div class="pf-card-name">Квалификация</div>
+          <div class="pf-card-progress">
+            <span class="pf-card-pct">0–25%</span>
+            <div class="pf-bar-wide"><div class="pf-bar-fill" style="width:15%"></div></div>
+          </div>
+        </div>
+        <div class="pf-card-badges">
+          <span class="pf-badge-forecast gray">Прогноз</span>
+          <span class="pf-badge-forecast">Upside</span>
+        </div>
+      </div>
+      <div class="pf-card-body">
+        <div class="pf-body-left">
+          <div class="pf-cond-label">Условие перехода</div>
+          <div class="pf-cond-text">Лид из лидовой воронки квалифицирован и готов к дальнейшему общению по проекту</div>
+        </div>
+        <div class="pf-body-right">
+          <div class="pf-tasks-label">Обязательные задачи</div>
+          <ul class="pf-task-list">
+            <li>BANT-квалификация (бюджет, спонсор, потребность, сроки)</li>
+            <li>Заполнить градусник</li>
+            <li>Назначить РП и направление из справочника (как в к7)</li>
+            <li>Внести код карточки клиента в к7</li>
+            <li>Провести установочные встречи, выявить ЛПР/ЛВР</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 02 Развитие сделки -->
+    <div class="pf-card">
+      <div class="pf-card-top" onclick="toggleCard(this)">
+        <div class="pf-card-num">02</div>
+        <div class="pf-card-meta">
+          <div class="pf-card-name">Развитие сделки</div>
+          <div class="pf-card-progress">
+            <span class="pf-card-pct">25–50%</span>
+            <div class="pf-bar-wide"><div class="pf-bar-fill" style="width:37%"></div></div>
+          </div>
+        </div>
+        <div class="pf-card-badges">
+          <span class="pf-badge-forecast gray">Прогноз</span>
+          <span class="pf-badge-forecast">Upside</span>
+        </div>
+      </div>
+      <div class="pf-card-body">
+        <div class="pf-body-left">
+          <div class="pf-cond-label">Условие перехода</div>
+          <div class="pf-cond-text">BANT проведён, клиент заинтересован в дальнейшем общении по проекту</div>
+        </div>
+        <div class="pf-body-right">
+          <div class="pf-tasks-label">Обязательные задачи</div>
+          <ul class="pf-task-list">
+            <li>Определить выгоды и бизнес-эффекты совместно с проектной командой</li>
+            <li>Проработать риски, ограничения, цели клиента</li>
+            <li>Определить технологию реализации</li>
+            <li>Подготовить Концепцию (согласовать с РОП и РП)</li>
+            <li>Провести защиту концепции у заказчика, обновить градусник</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 03 КП утверждено -->
+    <div class="pf-card">
+      <div class="pf-card-top" onclick="toggleCard(this)">
+        <div class="pf-card-num">03</div>
+        <div class="pf-card-meta">
+          <div class="pf-card-name">КП утверждено</div>
+          <div class="pf-card-progress">
+            <span class="pf-card-pct">50–75%</span>
+            <div class="pf-bar-wide"><div class="pf-bar-fill" style="width:62%"></div></div>
+          </div>
+        </div>
+        <div class="pf-card-badges">
+          <span class="pf-badge-forecast gray">Прогноз</span>
+          <span class="pf-badge-forecast">Forecast</span>
+        </div>
+      </div>
+      <div class="pf-card-body">
+        <div class="pf-body-left">
+          <div class="pf-cond-label">Условие перехода</div>
+          <div class="pf-cond-text">Клиент утвердил концепцию проекта и ждёт коммерческое предложение</div>
+        </div>
+        <div class="pf-body-right">
+          <div class="pf-tasks-label">Обязательные задачи</div>
+          <ul class="pf-task-list">
+            <li>Наполнить концепцию данными по бюджету</li>
+            <li>Подготовить КП (файл — прикрепить к сделке)</li>
+            <li>Внутренняя защита: менеджер + производство + РОП</li>
+            <li>Провести защиту КП у заказчика</li>
+            <li>Согласовать бюджет, дату старта, условия оплаты</li>
+            <li>Запустить подготовку Договора</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 04 Подписание договора -->
+    <div class="pf-card">
+      <div class="pf-card-top" onclick="toggleCard(this)">
+        <div class="pf-card-num">04</div>
+        <div class="pf-card-meta">
+          <div class="pf-card-name">Подписание договора</div>
+          <div class="pf-card-progress">
+            <span class="pf-card-pct">75–95%</span>
+            <div class="pf-bar-wide"><div class="pf-bar-fill" style="width:85%"></div></div>
+          </div>
+        </div>
+        <div class="pf-card-badges">
+          <span class="pf-badge-forecast gray">Прогноз</span>
+          <span class="pf-badge-forecast">Forecast</span>
+        </div>
+      </div>
+      <div class="pf-card-body">
+        <div class="pf-body-left">
+          <div class="pf-cond-label">Условие перехода</div>
+          <div class="pf-cond-text">Клиент согласовал бюджет, дату старта и готов подписать договор</div>
+        </div>
+        <div class="pf-body-right">
+          <div class="pf-tasks-label">Обязательные задачи</div>
+          <ul class="pf-task-list">
+            <li>Статус: Договор согласован → Договор подписан</li>
+            <li>Сформировать и отправить первый счёт</li>
+            <li>Указать сумму первого счёта в сделке</li>
+            <li>Обновить градусник, проконтролировать оплату</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 05 Успех -->
+    <div class="pf-card success-card">
+      <div class="pf-card-top" onclick="toggleCard(this)">
+        <div class="pf-card-num">05</div>
+        <div class="pf-card-meta">
+          <div class="pf-card-name">Успех</div>
+          <div class="pf-card-progress">
+            <span class="pf-card-pct" style="color:var(--fuchsia)">100%</span>
+            <div class="pf-bar-wide"><div class="pf-bar-fill" style="width:100%"></div></div>
+          </div>
+        </div>
+        <div class="pf-card-badges">
+          <span class="pf-badge-forecast">Сделка закрыта</span>
+        </div>
+      </div>
+      <div class="pf-card-body">
+        <div class="pf-body-left">
+          <div class="pf-cond-label">Условие закрытия</div>
+          <div class="pf-cond-text">Клиент оплатил первый счёт. Автосоздание сделки в воронке «Ведение проектов» (в разработке)</div>
+        </div>
+        <div class="pf-body-right">
+          <div class="pf-tasks-label">Действия после</div>
+          <ul class="pf-task-list">
+            <li>Передача клиента в проектный отдел</li>
+            <li>Фиксация суммы договора и условий в карточке</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Параллельные статусы -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px" class="reveal">
+    <div style="padding:28px 32px;border:1.5px solid rgba(232,23,122,.2);border-radius:14px;background:rgba(232,23,122,.03)">
+      <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--fuchsia);margin-bottom:10px">Сделка провалена</div>
+      <div style="font-size:14px;color:var(--gray);line-height:1.7">Выявить реальную причину отказа, обязательно указать в поле «Причина отказа». Маркетинг берёт клиента на прогрев.</div>
+    </div>
+    <div style="padding:28px 32px;border:1.5px solid rgba(201,150,12,.2);border-radius:14px;background:rgba(201,150,12,.03)">
+      <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:10px">Сделка отложена</div>
+      <div style="font-size:14px;color:var(--gray);line-height:1.7">Указать дату возврата и запланировать событие. Маркетинг включает в мероприятия и рассылки.</div>
+    </div>
+  </div>
+</section>
+
+<section class="forecast-sec" id="forecast">
+  <div class="s-tag reveal">Отчётность</div>
+  <h2 class="s-title reveal">Прогноз по сделке</h2>
+  <div class="fc-cards reveal">
+    <div class="fc-card"><div class="fc-eyebrow">Тип прогноза</div><div class="fc-name">Upside</div><div class="fc-range">0% — 50%</div><p>Сделки с неопределённостью. Квалификация проведена или идёт, концепция ещё не утверждена. Включаются в оптимистичный прогноз.</p></div>
+    <div class="fc-card"><div class="fc-eyebrow">Тип прогноза</div><div class="fc-name">Forecast</div><div class="fc-range">75% — 100%</div><p>Сделки с высокой вероятностью закрытия. КП утверждено или идёт подписание договора. Включаются в базовый план поступлений.</p></div>
+  </div>
+  <div class="fc-note reveal"><p><strong style="color:var(--white)">Важно:</strong> процент выполнения выставляется при смене этапа, но менеджер может скорректировать вручную. Это влияет на прогнозирование — будьте точны.</p></div>
+</section>
+
+<section class="pp-section" id="pp">
+  <div class="s-tag reveal">Коробочные продукты</div>
+  <h2 class="s-title reveal">Воронка «Продажа ПП»</h2>
+  <p class="s-lead reveal">Короткий цикл для программных продуктов — от первого контакта до отгрузки и подтверждения для рейтинга 1С.</p>
+  <div class="pp-flow reveal">
+    <div class="pp-step"><div class="pp-step-num">01</div><div class="pp-step-title">Встреча</div><div class="pp-step-desc">Первый контакт, выяснение потребности, презентация решения.</div><div class="pp-req"><strong>Обязательные поля</strong>Программный продукт · Направление · Код к7</div></div>
+    <div class="pp-step"><div class="pp-step-num">02</div><div class="pp-step-title">КП</div><div class="pp-step-desc">Подготовка и защита коммерческого предложения перед клиентом.</div><div class="pp-req"><strong>Обязательные поля</strong>КП согласовано с РОП · Файл КП прикреплён к сделке</div></div>
+    <div class="pp-step success"><div class="pp-step-num">03</div><div class="pp-step-title">Счёт оплачен</div><div class="pp-step-desc">Клиент подтвердил, оплатил — готово к отгрузке.</div><div class="pp-req"><strong>Последовательность</strong>Счёт → Оплата → Отгрузка → Подтверждение для рейтинга 1С</div></div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px" class="reveal">
+    <div style="padding:24px 28px;border:1.5px solid rgba(232,23,122,.2);border-radius:12px;background:rgba(232,23,122,.03)"><div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--fuchsia);margin-bottom:8px">Провалена</div><div style="font-size:14px;color:var(--gray)">Указать причину отказа. Маркетинг берёт на прогрев.</div></div>
+    <div style="padding:24px 28px;border:1.5px solid rgba(201,150,12,.2);border-radius:12px;background:rgba(201,150,12,.03)"><div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:8px">Отложено</div><div style="font-size:14px;color:var(--gray)">Указать дату возврата, запланировать событие.</div></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section class="support-sec" id="support">
+  <div class="s-tag reveal">Сопровождение и поддержка</div>
+  <h2 class="s-title reveal">Воронка сопровождения</h2>
+  <p class="s-lead reveal">Для договоров поддержки и доработок. Два пути: сразу с горячим запросом или через нулевой договор с ожиданием потребности.</p>
+  <div class="support-grid reveal">
+    <div class="support-card"><div class="support-icon si-pink">🔥</div><h3>Клиент с потребностью</h3><p>Пришёл сразу с готовым запросом на сопровождение или конкретную доработку.</p><div class="flow-pills"><span class="fpill active">Подготовка КП</span><span class="farrow">→</span><span class="fpill">Защита КП</span><span class="farrow">→</span><span class="fpill">Согл. договора</span><span class="farrow">→</span><span class="fpill active">Договор подписан</span><span class="farrow">→</span><span class="fpill">Запуск работ</span></div></div>
+    <div class="support-card"><div class="support-icon si-teal">🤝</div><h3>Нулевой договор</h3><p>Клиент подписал договор, но конкретной потребности пока нет. Ждём выявления запроса.</p><div class="flow-pills"><span class="fpill active">Договор подписан</span><span class="farrow">→</span><span class="fpill teal">Выявлен интерес</span><span class="farrow">→</span><span class="fpill">КП</span><span class="farrow">→</span><span class="fpill active">Запуск работ</span></div><div class="support-note">Клиенты с нулевым договором остаются на этапе «Договор подписан» до момента, пока менеджер не выявит новую потребность.</div></div>
+  </div>
+</section>
+
+<section class="mkt-sec" id="marketing">
+  <div class="s-tag reveal">Межфункциональное взаимодействие</div>
+  <h2 class="s-title reveal">Роль маркетинга в воронках</h2>
+  <p class="s-lead reveal">Маркетинг включается на нескольких этапах — как поддержка продаж и как самостоятельное направление по прогреву базы.</p>
+  <div class="mkt-grid reveal">
+    <div class="mkt-card"><div class="mkt-card-label">Ранние этапы</div><div class="mkt-card-title">Материалы для продаж</div><p>На этапах Квалификация и Развитие: презентации по продуктам, позиционирование, портфолио клиентов, полиграфия.</p></div>
+    <div class="mkt-card"><div class="mkt-card-label">Этап развития</div><div class="mkt-card-title">Участие во встречах</div><p>Маркетинг входит во встречи с производством и продажами для определения выгод и бизнес-эффектов, важных клиенту.</p></div>
+    <div class="mkt-heat"><div class="mkt-heat-title">Прогрев «отказников» и отложенных</div><p>Клиенты в статусах «Провалено» и «Отложено» автоматически переходят на прогрев. Маркетинг системно поддерживает контакт через мероприятия, инфоповоды и рассылки в Юнисендер. Когда клиент проявляет интерес — лид снова берётся в работу.</p><span class="mkt-heat-tag">♨ Прогрев: Провалено + Отложено</span></div>
+  </div>
+</section>
+
+<section class="access-sec" id="access">
+  <div class="s-tag reveal">Права в системе</div>
+  <h2 class="s-title reveal">Кто что видит и редактирует</h2>
+  <p class="s-lead reveal">Единый Битрикс для всех, но с чёткими границами редактирования — для прозрачности и контроля.</p>
+  <table class="access-table reveal">
+    <thead><tr><th>Роль</th><th>Видит лиды</th><th>Редактирует лиды</th><th>Видит сделки</th><th>Редактирует сделки</th></tr></thead>
+    <tbody>
+      <tr><td><strong>РОП / РОС</strong></td><td><span class="ic-yes">✓</span> Все</td><td><span class="ic-part">◐</span> Свои + своих сотрудников</td><td><span class="ic-yes">✓</span> Все</td><td><span class="ic-part">◐</span> Свои + своих сотрудников</td></tr>
+      <tr><td><strong>Менеджер ОП / ОС</strong></td><td><span class="ic-yes">✓</span> Все</td><td><span class="ic-part">◐</span> Только свои</td><td><span class="ic-yes">✓</span> Все</td><td><span class="ic-part">◐</span> Только свои</td></tr>
+      <tr><td><strong>Маркетинг</strong></td><td><span class="ic-yes">✓</span> Все</td><td><span class="ic-part">◐</span> Лиды с мероприятий</td><td><span class="ic-yes">✓</span> Все</td><td><span class="ic-no">—</span> Не редактирует</td></tr>
+    </tbody>
+  </table>
+  <div class="access-legend reveal">
+    <div class="al-item"><span class="ic-yes">✓</span> Полный доступ</div>
+    <div class="al-item"><span class="ic-part">◐</span> Частичный доступ</div>
+    <div class="al-item"><span style="color:var(--border)">—</span> Нет доступа</div>
+  </div>
+</section>
+
+<footer>
+  <div>
+    <div class="footer-brand">ЦКК <span>Воронки</span></div>
+    <div class="footer-meta">Битрикс24 · b24.1stbit.ru · Декабрь 2025</div>
+  </div>
+  <a href="https://b24.1stbit.ru" class="footer-btn" target="_blank">Открыть Битрикс →</a>
+</footer>
+
+<script>
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible') })
+}, { threshold: 0.07 })
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el))
+
+function toggleCard(header) {
+  const card = header.closest('.pf-card')
+  const isOpen = card.classList.contains('open')
+  // Close all
+  document.querySelectorAll('.pf-card').forEach(c => c.classList.remove('open'))
+  // Open clicked if it was closed
+  if (!isOpen) card.classList.add('open')
+}
+</script>
+</body>
+</html>
